@@ -427,7 +427,9 @@ input:checked + .slider:before {
 	line-height: 125%;
 	
 }
-
+#loadpage{
+	z-index: 401;
+}
 </style>
 <body>
 <div class="container">
@@ -809,9 +811,10 @@ function ready(){
 	});
 	
 	
-	 
+	 	$("#loadpage").show();
 		//d3.csv("https://raw.githubusercontent.com/NYCDOB/data_store/master/facadeLL11_v3.csv",function(data){
 		d3.csv("data/ActiveBoilers.csv",function(data){
+		$("#loadpage").hide();
 				points = data.filter(function(d) {
 					//if( ((+d["Lat"] != 0) && (+d["Lon"] !=0 )) && (([d.Cycle] == "9A") || [d.Cycle] == "9B" || [d.Cycle] == "9C") ) {
 					if( d.BoilerStatusName == "Active" ) {
