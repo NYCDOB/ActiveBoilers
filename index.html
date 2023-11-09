@@ -443,14 +443,16 @@ input:checked + .slider:before {
 				<!-- </ul> -->
 			</div>
 </div>
+
 <div class="container-fluid dobmain" style="margin-top:60px;">
 	<div class="row">
+
 		  <div class="col-lg-9" style="height:89vh">
+
 			  <div class="chart-stage" id="map-container" style="border:1px solid black;height:100%;width:100%">
 
 				<div id="map">	
-
-					<div id="loadpage" style="position:absolute; 
+		  			<div id="loadpage" style="position:absolute; 
 						left:0px; top:0px; background-color:white; 
 						layer-background-color:white; height:100%; 
 						width:100%;"> 
@@ -459,6 +461,7 @@ input:checked + .slider:before {
 							<img src="data/spinner.gif">
 						  </p>
 					</div>
+
 					
 				<svg></svg>
 					<div id="ui-container" class="ui" style="z-index: 401">
@@ -489,7 +492,7 @@ input:checked + .slider:before {
 								<input type="checkbox" checked="true" id="chkOilGas">
 								<span class="slider" id="sliderOilGas"></span>
 							</label>
-							<span class="en" id="sliderTxt">OIL & GAS</span>
+							<span class="en" id="sliderTxt">DUAL FUEL</span>
 						</span>
 						<br/>
 
@@ -511,6 +514,9 @@ input:checked + .slider:before {
 						</span>
 						<br/>
 					</div>
+					
+
+					
 				</div>
 			  </div>
 		  </div>
@@ -545,7 +551,7 @@ input:checked + .slider:before {
 						<!-- <button class="btn btn-primary btn-sm active" id="sub_total" type="button" >TOTAL</button> -->
 						<button class="btn btn-primary btn-sm" id="sub_gas" type="button" >GAS</button>
 						<button class="btn btn-primary btn-sm" id="sub_oil" type="button" >OIL</button>
-						<button class="btn btn-primary btn-sm" id="sub_oilGas" type="button" >OIL & GAS</button>
+						<button class="btn btn-primary btn-sm" id="sub_oilGas" type="button" >DUAL FUEL</button>
 						<button class="btn btn-primary btn-sm" id="sub_electric" type="button" >ELECTRIC</button>
 						<button class="btn btn-primary btn-sm" id="sub_unknown" type="button" >UNKNOWN</button>
 					</div>
@@ -555,7 +561,11 @@ input:checked + .slider:before {
 					<svg id="fueltype_oil"></svg>
 					<svg id="fueltype_oilgas"></svg>
 					<svg id="fueltype_electric"></svg>
-					<svg id="fueltype_unkown"></svg>						
+					<svg id="fueltype_unkown"></svg>	
+
+
+
+					
 					</div>
 				  </div>
 				
@@ -597,6 +607,7 @@ $(document).ready(function(){
     L.Control.include({
       _refocusOnMap: L.Util.falseFn // Do nothing.
     });	
+
 var map = L.map('map').setView([40.72809145215831, -73.995155119931], 14);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
 
@@ -629,7 +640,7 @@ var width = $("#map").width(),
 	
 onload = ready();
 
-	
+
 function ready(){
 
 	pointsOverlaySQFT = L.d3SvgOverlay(function(sel,proj){
@@ -646,14 +657,14 @@ function ready(){
 			.attr('cx',function(d){return proj.latLngToLayerPoint(d.latLng).x;})
 			.attr('cy',function(d){return proj.latLngToLayerPoint(d.latLng).y;})
 			.attr('class', function(d){
-				switch(d.energySource){
+				switch(d.fuelName){
 					case 'GAS':
 						return 'pointGas';
 						break;
 					case 'OIL':
 						return 'pointOil';
 						break;
-					case 'OIL & GAS':
+					case 'DUAL FUEL':
 						return 'pointOilGas';
 						break;
 					case 'ELECTRIC':
@@ -675,7 +686,8 @@ function ready(){
 						'BOROUGH: '+ d.Borough + '</br>' +
 						'BLOCK: ' + d.block + '</br>' +	
 						'LOT: ' + d.lot + '</br>' +	
-						'FUEL TYPE: ' + d.energySource + '</br>' +	
+						'CD: ' + d.CD + '</br>' +
+						'FUEL TYPE: ' + d.fuelName + '</br>' +	
 						'STATUS: ' + d.boilerStatus + '</br>' +	
 						'BOILER COUNT AT BIN: ' + d.boilerCount
 
@@ -730,13 +742,13 @@ function ready(){
 				gasSlider.onchange = function(){
 						if(this.checked){
 							d3.selectAll(".pointGas").filter(function(d) {
-								return d.energySource == "GAS";
+								return d.fuelName == "GAS";
 							})
 							.style("display", "block");	
 
 						} else {
 							d3.selectAll(".pointGas").filter(function(d) {
-								return d.energySource == "GAS";
+								return d.fuelName == "GAS";
 							})
 							.style("display", "none");
 										
@@ -746,13 +758,13 @@ function ready(){
 				oilSlider.onchange = function(){
 						if(this.checked){
 							d3.selectAll(".pointOil").filter(function(d) {
-								return d.energySource == "OIL";
+								return d.fuelName == "OIL";
 							})
 							.style("display", "block");	
 
 						} else {
 							d3.selectAll(".pointOil").filter(function(d) {
-								return d.energySource == "OIL";
+								return d.fuelName == "OIL";
 							})
 							.style("display", "none");
 										
@@ -762,13 +774,13 @@ function ready(){
 				oilGasSlider.onchange = function(){
 						if(this.checked){
 							d3.selectAll(".pointOilGas").filter(function(d) {
-								return d.energySource == "OIL & GAS";
+								return d.fuelName == "DUAL FUEL";
 							})
 							.style("display", "block");	
 
 						} else {
 							d3.selectAll(".pointOilGas").filter(function(d) {
-								return d.energySource == "OIL & GAS";
+								return d.fuelName == "DUAL FUEL";
 							})
 							.style("display", "none");
 										
@@ -778,13 +790,13 @@ function ready(){
 				electricSlider.onchange = function(){
 						if(this.checked){
 							d3.selectAll(".pointElectric").filter(function(d) {
-								return d.energySource == "ELECTRIC";
+								return d.fuelName == "ELECTRIC";
 							})
 							.style("display", "block");	
 
 						} else {
 							d3.selectAll(".pointElectric").filter(function(d) {
-								return d.energySource == "ELECTRIC";
+								return d.fuelName == "ELECTRIC";
 							})
 							.style("display", "none");
 										
@@ -794,13 +806,13 @@ function ready(){
 				unknownSlider.onchange = function(){
 						if(this.checked){
 							d3.selectAll(".pointUnknown").filter(function(d) {
-								return d.energySource == "UNKNOWN";
+								return d.fuelName == "UNKNOWN";
 							})
 							.style("display", "block");	
 
 						} else {
 							d3.selectAll(".pointUnknown").filter(function(d) {
-								return d.energySource == "UNKNOWN";
+								return d.fuelName == "UNKNOWN";
 							})
 							.style("display", "none");
 										
@@ -810,8 +822,8 @@ function ready(){
 		
 	});
 	
-	
-	 	$("#loadpage").show();
+$("#loadpage").show();	
+		
 		//d3.csv("https://raw.githubusercontent.com/NYCDOB/data_store/master/facadeLL11_v3.csv",function(data){
 		d3.csv("data/ActiveBoilers.csv",function(data){
 		$("#loadpage").hide();
@@ -831,10 +843,12 @@ function ready(){
 				d.energySource = d["BurnerExistingEnergySource"].toUpperCase();
 				d.boilerCount = d["Count of Boilers per BIN"];
 				d.boilerID = [d.BoilerId];
+				d.CD = [d.P_COMM_DISTRICT];
+				d.fuelName = d["FuelName"].toUpperCase();
 			return d;
 			});
 			
-
+			
 			pointsOverlaySQFT.addTo(map);
 			
 			d3.selectAll(".pointGas").style("display", "block");
@@ -865,7 +879,7 @@ function ready(){
 
 			//CURRENT STATUS			
 			var nestEnergySource = d3.nest()
-				.key(function(d){return (d.energySource).toUpperCase();})//.sortKeys(d3.ascending)
+				.key(function(d){return (d.fuelName).toUpperCase();})//.sortKeys(d3.ascending)
 				.rollup(function(v) { 
 					return v.length;
 				})
@@ -921,7 +935,7 @@ function ready(){
 
 			//GAS FUEL TYPE
 			var filterVals=points.filter(function(d){
-				return ((d.BurnerExistingEnergySource=="Gas"))
+				return ((d.FuelName=="Gas"))
 			})
 			var nestGas = d3.nest()
 				.key(function(d) { return d.Borough; }).sortKeys(d3.ascending)
@@ -934,7 +948,7 @@ function ready(){
 			
 			//OIL FUEL TYPE
 			var filterVals=points.filter(function(d){
-				return ((d.BurnerExistingEnergySource=="Oil"))
+				return ((d.FuelName=="Oil"))
 			})
 			var nestOil = d3.nest()
 				.key(function(d) { return d.Borough; }).sortKeys(d3.ascending)
@@ -947,7 +961,7 @@ function ready(){
 			
 			//OIL & GAS FUEL TYPE
 			var filterVals=points.filter(function(d){
-				return ((d.BurnerExistingEnergySource=="Oil & Gas"))
+				return ((d.FuelName=="Dual Fuel"))
 			})
 			var nestOilGas = d3.nest()
 				.key(function(d) { return d.Borough; }).sortKeys(d3.ascending)
@@ -960,7 +974,7 @@ function ready(){
 			
 			//ELECTRIC FUEL TYPE
 			var filterVals=points.filter(function(d){
-				return ((d.BurnerExistingEnergySource=="Electric"))
+				return ((d.FuelName=="Electric"))
 			})
 			var nestElectric = d3.nest()
 				.key(function(d) { return d.Borough; }).sortKeys(d3.ascending)
@@ -973,7 +987,7 @@ function ready(){
 			
 			//UNKNOWN FUEL TYPE
 			var filterVals=points.filter(function(d){
-				return ((d.BurnerExistingEnergySource=="UNKNOWN"))
+				return ((d.FuelName=="UNKNOWN"))
 			})
 			var nestUnknown = d3.nest()
 				.key(function(d) { return d.Borough; }).sortKeys(d3.ascending)
@@ -1479,7 +1493,7 @@ function ready(){
 			 }
 			
 	});	
-	
+		
 		
 }
 
